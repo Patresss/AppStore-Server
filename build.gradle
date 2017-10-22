@@ -64,3 +64,23 @@ dependencies {
 bootRun {
     args = ["--spring.profiles.active=" + profiles]
 }
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'edu.inf.store.StoreApplicationKt'
+    }
+
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+}
+
+task bigJar(type: Jar) {
+    manifest {
+        attributes 'Implementation-Title': 'Table of Contents Fix for Hugo',
+                'Implementation-Version': version,
+                'Main-Class': 'edu.inf.store.StoreApplicationKt'
+    }
+    baseName = project.name
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+

@@ -82,6 +82,7 @@ classes/
 # Package Files
 ######################
 *.jar
+!AppStore-Server.jar
 *.war
 *.ear
 *.db
