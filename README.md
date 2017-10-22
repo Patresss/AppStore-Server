@@ -3,15 +3,6 @@
 Do uruchomienia potrzeba gradle w wersji 4+  
 https://gradle.org/releases/
 
-Aby uruchomić: gradle bootRun
-
-Są dwie wersje:
-- dev (baza H2)
-- prod (baza postgres)
-
-Domyślnie jest dev. Aby zmienić należy w pliku build.gradle ustawić "def profiles = 'prod'". W pliku application-prod.yml jest konfiguracja do bazy postgres
-
-
 Socket:
 - Przykład jest w http://localhost:8080
 - MessageMapping("/hello")
@@ -26,4 +17,11 @@ Rest:
     - http://localhost:8080/api/games
 
 
+Aby uruchomić: gradle bootRun
+
+Są dwa profile:
+- dev (baza H2)
+- prod (baza postgres)
+
+Domyślnie jest dev. Aby zmienić należy w pliku build.gradle ustawić "def profiles = 'prod'". W pliku application-prod.yml jest konfiguracja do bazy postgres
 
