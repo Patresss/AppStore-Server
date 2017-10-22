@@ -1,4 +1,4 @@
-package edu.inf.store.resources
+package edu.inf.store.web.rest.resources
 
 import edu.inf.store.domain.Game
 import edu.inf.store.repository.GameRepository
