@@ -20,7 +20,6 @@ class GameResource(private val gameRepository: GameRepository) {
         val log: Logger = LoggerFactory.getLogger(GameResource::class.java)
     }
 
-
     @GetMapping("/games/{id}")
     fun getGame(@PathVariable id: Long): ResponseEntity<Game> {
         log.debug("REST request to get Game : {}", id)
@@ -36,7 +35,7 @@ class GameResource(private val gameRepository: GameRepository) {
 
     @GetMapping("/games")
     fun getAllGames(): ResponseEntity<List<Game>> {
-        log.debug("REST request to get all Games")
+        log.warn("REST request to get all Games")
         val games = gameRepository.findAll()
         return ResponseEntity(games, HttpStatus.OK)
     }

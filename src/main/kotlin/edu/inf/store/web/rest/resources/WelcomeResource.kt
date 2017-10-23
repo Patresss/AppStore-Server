@@ -20,5 +20,4 @@ class WelcomeResource {
         return "Welcome $name!"
     }
 
-
 }
