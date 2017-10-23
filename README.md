@@ -4,9 +4,10 @@ Do uruchomienia potrzeba gradle w wersji 4+
 https://gradle.org/releases/
 
 Socket:
-- Przykład jest w http://localhost:8080
-- MessageMapping("/hello")
-- SendTo("/topic/greetings")
+- Chat w http://localhost:8080
+- Url: ws://127.0.0.1:8080/chat
+- send("/app/chat", "{\"name\":\"Patryk\", \"text\":\"Hello\"}
+- subscribe("/topic/messages")
 
 Rest:
 - Welcome 
