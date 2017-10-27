@@ -7,9 +7,10 @@ Executable jar - [download jar](https://github.com/Patresss/Clicker/raw/master/c
 java -jar AppStore-Server.jar
 
 Socket:
-- Przykład jest w http://localhost:8080
-- MessageMapping("/hello")
-- SendTo("/topic/greetings")
+- Chat w http://localhost:8080
+- Url: ws://127.0.0.1:8080/chat
+- Send("/app/chat", "{\"name\":\"Patryk\", \"text\":\"Hello\"}
+- Subscribe("/topic/messages")
 
 Rest:
 - Swagger: http://localhost:8080/swagger-ui.html
