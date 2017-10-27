@@ -3,12 +3,16 @@
 Do uruchomienia potrzeba gradle w wersji 4+  
 https://gradle.org/releases/
 
+Executable jar - [download jar](https://github.com/Patresss/Clicker/raw/master/clicker.jar)
+java -jar AppStore-Server.jar
+
 Socket:
 - Przykład jest w http://localhost:8080
 - MessageMapping("/hello")
 - SendTo("/topic/greetings")
 
 Rest:
+- Swagger: http://localhost:8080/swagger-ui.html
 - Welcome 
     - http://localhost:8080/api/welcome
     - http://localhost:8080/api/welcome/{name}
