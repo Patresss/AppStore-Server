@@ -17,7 +17,7 @@ data class Game(
         var description: String = "",
 
         @Column(name = "image")
-        var file: ByteArray? = null,
+        var image: ByteArray? = null,
 
         @Column(name = "version")
         var version: String = "1.0"
