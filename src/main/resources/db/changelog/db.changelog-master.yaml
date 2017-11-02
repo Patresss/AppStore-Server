@@ -1,3 +1,0 @@
-databaseChangeLog:
- - include:
-      file: /db/changelog/added-entity-game.yaml

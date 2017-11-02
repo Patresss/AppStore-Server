@@ -6,11 +6,9 @@ spring:
         password:
     h2:
         console:
-            enabled: false
+            enabled: true
             path: /h2
     jpa:
         database-platform: org.hibernate.dialect.H2Dialect
         database: H2
         show-sql: true
-        hibernate:
-            ddl-auto: update

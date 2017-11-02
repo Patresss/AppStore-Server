@@ -11,7 +11,30 @@ data class Game(
         var id: Long? = null,
 
         @Column(name = "name")
-        var name: String = ""
+        var name: String = "",
+
+        @Column(name = "description")
+        var description: String = "",
+
+        @Column(name = "image")
+        var file: ByteArray? = null,
+
+        @Column(name = "version")
+        var version: String = "1.0"
 ) {
-    constructor() : this(id = null)
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as Game
+
+        if (id != other.id) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        return id?.hashCode() ?: 0
+    }
 }
