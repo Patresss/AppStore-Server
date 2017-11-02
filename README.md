@@ -6,7 +6,7 @@ https://gradle.org/releases/
 Executable jar - [download jar](https://github.com/Patresss/AppStore-Server/raw/master/AppStore-Server.jar)
 java -jar AppStore-Server.jar
 
-**Baza dev:**
+**Baza dev:** http://localhost:8080/h2
 ```
 Driver Class:	org.h2.Driver
 JDBC URL:	jdbc:h2:file:./build/h2db/db/store;DB_CLOSE_DELAY=-1
