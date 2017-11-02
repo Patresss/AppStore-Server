@@ -1,9 +1,4 @@
-server:
-    port: 8080
-
 spring:
-    jackson:
-        serialization.indent_output: true
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
         url: jdbc:postgresql://localhost:5432/store
@@ -16,5 +11,3 @@ spring:
         database-platform: org.hibernate.dialect.PostgreSQLDialect
         database: POSTGRESQL
         show-sql: true
-
-
