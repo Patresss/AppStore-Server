@@ -4,7 +4,8 @@ Do uruchomienia potrzeba gradle w wersji 4+
 https://gradle.org/releases/
 
 Executable jar - [download jar](https://github.com/Patresss/AppStore-Server/raw/master/AppStore-Server.jar)
-```java -jar AppStore-Server.jar```
+
+Aby uruchomić: ```java -jar AppStore-Server.jar```
 
 **Baza dev:** http://localhost:8080/h2
 ```
@@ -28,7 +29,8 @@ Password:
 - Game (cały CRUD)
     - http://localhost:8080/api/games
 
-Aby uruchomić: gradle bootRun
+Aby uruchomić: ```gradle bootRun```
+
 Są dwa profile:
 - dev (baza H2)
 - prod (baza postgres)
