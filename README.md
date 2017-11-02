@@ -4,7 +4,7 @@ Do uruchomienia potrzeba gradle w wersji 4+
 https://gradle.org/releases/
 
 Executable jar - [download jar](https://github.com/Patresss/AppStore-Server/raw/master/AppStore-Server.jar)
-java -jar AppStore-Server.jar
+```java -jar AppStore-Server.jar```
 
 **Baza dev:** http://localhost:8080/h2
 ```
