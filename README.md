@@ -3,7 +3,7 @@
 Do uruchomienia potrzeba gradle w wersji 4+  
 https://gradle.org/releases/
 
-Executable jar - [download jar](https://github.com/Patresss/Clicker/raw/master/clicker.jar)
+Executable jar - [download jar](https://github.com/Patresss/AppStore-Server/raw/master/AppStore-Server.jar)
 java -jar AppStore-Server.jar
 
 Socket:
