@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+{% set active_page = 'admin' %} 
+{% block body %}
+<div class="" id="settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
+  <form method="POST" enctype="multipart/form-data">
+    <h2>Add Game</h2>
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input value="{% if values['gname'] %}{{values['gname']}}{% endif %}" type="text" name="gname" class="form-control{% if errors['gname'] %} is-invalid{% endif %}" placeholder="Game name"/>
+      {% if errors['gname'] %}
+        <div class="invalid-feedback">
+          {{ errors['gname'] }}
+        </div>
+      {% endif %}
+    </div>
+    <div class="form-group">
+      <label for="version">Version</label>
+      <input value="{% if values['gversion'] %}{{values['gversion']}}{% endif %}" type="text" name="gversion" class="form-control{% if errors['gversion'] %} is-invalid{% endif %}" placeholder="Game version" />
+      {% if errors['gversion'] %}
+        <div class="invalid-feedback">
+          {{ errors['gversion'] }}
+        </div>
+      {% endif %}
+    </div>
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea name="gdescription" class="form-control{% if errors['gdescription'] %} is-invalid{% endif %}" placeholder="Game description">{% if values['gdescription'] %}{{ values['gdescription'] }}{% endif %}</textarea>
+      {% if errors['gdescription'] %}
+        <div class="invalid-feedback">
+          {{ errors['gdescription'] }}
+        </div>
+      {% endif %}
+    </div>
+    <div class="form-group">
+      <label class="custom-file">
+        <input type="file" id="image" name="gimage" class="custom-file-input">
+        <span class="custom-file-control"></span>
+      </label>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+
+  </form>
+</div>
+
+</div>
+
+{% endblock %}

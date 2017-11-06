@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+{% set active_page = 'admin' %} 
+{% block body %}
+<form method="POST">
+  <div class="form-group">
+    <p>Are you shure to delete game {{ game['name'] }}?<p>
+    <input value="{{ game['id'] }}" type="hidden" name="game_id" />
+    <input class="btn btn-danger" type="submit" value="Delete" />
+  </div>
+
+</form>
+
+{% endblock %}

@@ -1,0 +1,67 @@
+body{
+  margin: 20px auto;
+}
+#logo{
+	position: relative;
+}
+#logo span{
+	position: absolute;
+	font-weight: bold;
+	top: 20px;
+	left: 45px;
+	font-size: 30px;
+}
+#navbarSupportedContent{
+	margin: 15px 0 0 0;
+}
+#carouselExampleIndicators{
+	margin: 0 0 15px 0;
+}
+#nav nav{
+	width: 100%;
+	margin-bottom: 15px;
+}
+#v-pills-tab{
+	width: 100%;
+}
+.custom-file-control:lang(en)::before{
+    content: "Browse";
+}
+.custom-file-control:lang(en):empty::after {
+    content: "Choose file...";
+}
+.custom-file-control::before {
+    position: absolute;
+    top: -1px;
+    right: -1px;
+    bottom: -1px;
+    z-index: 6;
+    display: block;
+    height: calc(2.25rem + 2px);
+    padding: .375rem .75rem;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #e9ecef;
+    border: 1px solid #ced4da;
+    border-radius: 0 .25rem .25rem 0;
+}
+
+@media only screen and (min-width: 992px) {
+	#navbarSupportedContent{
+		margin: auto;
+	}
+	#nav .navbar{
+		position: fixed;
+	}
+	#nav{
+		min-height: 260px;
+	}
+	#nav nav{
+		width: 20%;
+		max-width: 255px;
+	}
+	#carouselExampleIndicators{
+		width: 50%;
+		margin: 0 0 15px 15px;
+	}
+}
