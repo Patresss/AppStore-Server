@@ -36,9 +36,18 @@ def get_admin():
             errors['gdescription'] = "Description can not be empty"
 
         if len(errors) == 0:
+
+            baseEncodedImage = "%s" % base64.b64encode(request.files['gimage'].read())
+            if len(baseEncodedImage) >= 3:
+                baseEncodedImage = baseEncodedImage[2:-1]
+
+            baseEncodedIcon = "%s" % base64.b64encode(request.files['gicon'].read())
+            if len(baseEncodedImage) >= 3:
+                baseEncodedIcon = baseEncodedIcon[2:-1]
             data = {
                 "description": "%s" % gdescription,
-                "image": "%s" % base64.b64encode(request.files['gimage'].read()),
+                "image": baseEncodedImage,
+                "icon": baseEncodedIcon,
                 "name": "%s" % gname,
                 "version": "%s" % gversion,
             }
@@ -96,10 +105,20 @@ def edit(id):
         gid = request.form.get("gid", 0)
 
         if len(errors) == 0:
+
+            baseEncodedImage = "%s" % base64.b64encode(request.files['gimage'].read())
+            if len(baseEncodedImage) >= 3:
+                baseEncodedImage = baseEncodedImage[2:-1]
+
+            baseEncodedIcon = "%s" % base64.b64encode(request.files['gicon'].read())
+            if len(baseEncodedImage) >= 3:
+                baseEncodedIcon = baseEncodedIcon[2:-1]
+
             data = {
                 "id" : "%s" % gid,
                 "description": "%s" % gdescription,
-                "image": "%s" % base64.b64encode(request.files['gimage'].read()),
+                "image": baseEncodedImage,
+                "icon": baseEncodedIcon,
                 "name": "%s" % gname,
                 "version": "%s" % gversion,
             }

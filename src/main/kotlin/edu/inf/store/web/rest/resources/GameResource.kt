@@ -22,7 +22,7 @@ class GameResource(private val gameRepository: GameRepository) {
 
     @GetMapping("/games/{id}")
     fun getGame(@PathVariable id: Long): ResponseEntity<Game> {
-        log.debug("REST request to get Game : {}", id)
+        log.info("REST request to get Game : {}", id)
         return try {
             val game = gameRepository.getOne(id)
             log.debug("Found Game : {}", game)
@@ -35,14 +35,14 @@ class GameResource(private val gameRepository: GameRepository) {
 
     @GetMapping("/games")
     fun getAllGames(): ResponseEntity<List<Game>> {
-        log.warn("REST request to get all Games")
+        log.info("REST request to get all Games")
         val games = gameRepository.findAll()
         return ResponseEntity(games, HttpStatus.OK)
     }
 
     @PostMapping("/games")
     fun createGame(@Valid @RequestBody game: Game): ResponseEntity<Game> {
-        log.debug("REST request to create Game {} ", game)
+        log.info("REST request to create Game {} ", game)
         if (game.id != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new game cannot already have an ID")).body(null)
         }
@@ -54,7 +54,7 @@ class GameResource(private val gameRepository: GameRepository) {
 
     @PutMapping("/games")
     fun updateGame(@Valid @RequestBody game: Game): ResponseEntity<Game> {
-        log.debug("REST request to update Game : {}", game)
+        log.info("REST request to update Game : {}", game)
         if (game.id == null) {
             return createGame(game)
         }
@@ -66,7 +66,7 @@ class GameResource(private val gameRepository: GameRepository) {
 
     @DeleteMapping("/games/{id}")
     fun deleteLesson(@PathVariable id: Long): ResponseEntity<Void> {
-        log.debug("REST request to delete Game : {}", id)
+        log.info("REST request to delete Game : {}", id)
         return if(gameRepository.existsById(id)) {
             gameRepository.deleteById(id)
             ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build()

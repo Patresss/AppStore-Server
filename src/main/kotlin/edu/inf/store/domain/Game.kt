@@ -16,6 +16,9 @@ data class Game(
         @Column(name = "description")
         var description: String = "",
 
+        @Column(name = "icon")
+        var icon: ByteArray? = null,
+
         @Column(name = "image")
         var image: ByteArray? = null,
 

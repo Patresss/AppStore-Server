@@ -12,6 +12,12 @@
             <column name="name" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
+            <column name="version" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="varchar(2048)"/>
+            <column name="image" type="longblob"/>
+            <column name="icon" type="longblob"/>
         </createTable>
     </changeSet>
 
