@@ -13,8 +13,10 @@
             <h4 class="card-title">{{ game['name'] }}</h4>
             <p class="card-text">{{ game['description'][:110] }}...</p>
             <a href="/details/{{ game['id'] }}" class="btn btn-primary">Show</a>
-	    <a href="/delete/{{ game['id'] }}" class="btn btn-danger">Delete</a>
-	    <a href="/edit/{{ game['id'] }}" class="btn btn-success">Edit</a>
+	    {% if admin == 'True' %}
+	      <a href="/delete/{{ game['id'] }}" class="btn btn-danger">Delete</a>
+	      <a href="/edit/{{ game['id'] }}" class="btn btn-success">Edit</a>
+	    {% endif %}
           </div>
         </div>
       </div>
