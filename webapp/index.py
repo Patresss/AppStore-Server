@@ -39,14 +39,16 @@ def admin():
         gdescription = request.form.get('gdescription', None)
         if gdescription == "":
             errors['gdescription'] = "Description can not be empty"
+        gimage = base64.b64encode(request.files['gimage'].read())
 
         if len(errors) == 0:
             data = {
                 "description": "%s" % gdescription,
-                "image": "%s" % base64.b64encode(request.files['gimage'].read()),
                 "name": "%s" % gname,
                 "version": "%s" % gversion,
             }
+            if gimage != "":
+                data["image"] = "%s" % gimage,
             headers = {'Content-type': 'application/json','Accept': 'text/plain'}
             r = requests.post("http://localhost:8080/api/games",data=json.dumps(data),headers=headers)
 
@@ -115,10 +117,11 @@ def edit(id):
             data = {
                 "id" : "%s" % gid,
                 "description": "%s" % gdescription,
-                "image": "%s" % gimage,
                 "name": "%s" % gname,
                 "version": "%s" % gversion,
             }
+            if gimage != "":
+                data["image"] = "%s" % gimage,
             headers = {'Content-type': 'application/json','Accept': 'text/plain'}
             r = requests.put("http://localhost:8080/api/games", data=json.dumps(data),headers=headers)
 
@@ -157,7 +160,6 @@ def logout():
         response.set_cookie("admin", expires=0)
 
     return response
-
 
 
 @app.errorhandler(404)

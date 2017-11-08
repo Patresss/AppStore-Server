@@ -45,6 +45,12 @@ body{
     border: 1px solid #ced4da;
     border-radius: 0 .25rem .25rem 0;
 }
+#remove-img{
+    font-weight: bold;
+    font-size: 30px;
+    color: red;
+    text-decoration: none;
+}
 
 @media only screen and (min-width: 992px) {
 	#navbarSupportedContent{

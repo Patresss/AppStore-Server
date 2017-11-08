@@ -1,23 +1,9 @@
 $( document ).ready(function() {
-	/*
-	// ------- auto load content by fragment url
-	var hash = window.location.hash;
-	if(!window.location.hash) {
-		hash = '#home';
-	}
-	var link = $('#v-pills-tab').find('a[href="'+hash+'"]');
-	$(link).tab('show');
-	//====================
-
-
-	// ------- load content by click menu
-	$('#v-pills-tab a').on('click', function (e) {
-	  $(this).tab('show')
-	})
-	//==================
-	*/
-
-
+	$("#remove-img").on('click', function(e){
+		e.preventDefault();
+		$("#image").remove();
+		$("#ghimage").val("")
+	});
 
         var stompClient = null;
 	            

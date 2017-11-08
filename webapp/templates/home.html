@@ -8,7 +8,9 @@
     {% for game in games %}
       <div class="col-12 col-md-6 mb-4">
         <div class="card">
+	  {% if game['image'] %}
           <img class="card-img-top" src="data:image/png;base64,{{ game['image'] }}" alt="Card image cap">
+	  {% endif %}
           <div class="card-body">
             <h4 class="card-title">{{ game['name'] }}</h4>
             <p class="card-text">{{ game['description'][:110] }}...</p>
