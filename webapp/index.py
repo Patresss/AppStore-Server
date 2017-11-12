@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, abort, redirect, url_for
+from flask import make_response
 import requests
 import json
 import base64
@@ -9,11 +10,11 @@ app = Flask(__name__)
 def get_list():
     headers = {'Content-type': 'application/json','Accept': '*/*'}
     r = requests.get("http://localhost:8080/api/games",headers=headers)
-    return render_template("home.html", games=json.loads(r.text))
+    return render_template("home.html", games=json.loads(r.text), admin=request.cookies.get('admin', 'False'))
 
 
 @app.route('/details/<int:id>')
-def get_details(id):
+def details(id):
     headers = {'Content-type': 'application/json','Accept': '*/*'}
     r = requests.get("http://localhost:8080/api/games/%s" % id, headers=headers)
     if r.status_code != 200:
@@ -22,7 +23,11 @@ def get_details(id):
 
 
 @app.route('/admin', methods=['GET', 'POST'])
-def get_admin():
+def admin():
+    admin = request.cookies.get('admin', 'False')
+    if admin != "True":
+        return redirect(url_for('get_list'))
+
     errors = {}
     if request.method == 'POST':
         gname = request.form.get('gname', None)
@@ -34,6 +39,7 @@ def get_admin():
         gdescription = request.form.get('gdescription', None)
         if gdescription == "":
             errors['gdescription'] = "Description can not be empty"
+        gimage = base64.b64encode(request.files['gimage'].read())
 
         if len(errors) == 0:
 
@@ -51,6 +57,8 @@ def get_admin():
                 "name": "%s" % gname,
                 "version": "%s" % gversion,
             }
+            if gimage != "":
+                data.update({'image': "%s" % gimage,})
             headers = {'Content-type': 'application/json','Accept': 'text/plain'}
             r = requests.post("http://localhost:8080/api/games",data=json.dumps(data),headers=headers)
 
@@ -67,6 +75,10 @@ def get_messanger():
 
 @app.route('/delete/<int:id>', methods=['GET', 'POST'])
 def delete(id):
+    admin = request.cookies.get('admin', 'False')
+    if admin != "True":
+        return redirect(url_for('get_list'))
+
     headers = {'Content-type': 'application/json','Accept': '*/*'}
     r = requests.get("http://localhost:8080/api/games/%s" % id, headers=headers)
     if r.status_code != 200:
@@ -85,6 +97,10 @@ def delete(id):
 
 @app.route('/edit/<int:id>', methods=['GET', 'POST'])
 def edit(id):
+    admin = request.cookies.get('admin', 'False')
+    if admin != "True":
+        return redirect(url_for('get_list'))
+
     errors = {}
 
     headers = {'Content-type': 'application/json','Accept': '*/*'}
@@ -103,6 +119,11 @@ def edit(id):
         if gdescription == "":
             errors['gdescription'] = "Description can not be empty"
         gid = request.form.get("gid", 0)
+        gimage = request.form.get('ghimage', "")
+        if gimage == "":
+            gimage = request.files['gimage'].read()
+            if gimage != "":
+                gimage = base64.b64encode(gimage)
 
         if len(errors) == 0:
 
@@ -122,6 +143,8 @@ def edit(id):
                 "name": "%s" % gname,
                 "version": "%s" % gversion,
             }
+            if gimage != None:
+                data.update({'image': "%s" % gimage,})
             headers = {'Content-type': 'application/json','Accept': 'text/plain'}
             r = requests.put("http://localhost:8080/api/games", data=json.dumps(data),headers=headers)
 
@@ -129,6 +152,37 @@ def edit(id):
                 return redirect(url_for('get_list'))
 
     return render_template('edit.html', values=json.loads(r.text), errors=errors )
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login_admin():
+    admin = request.cookies.get('admin', 'False')
+    if admin == "True":
+        return redirect(url_for("get_list"))
+
+    errors = {}
+    if request.method == 'POST':
+        login = request.form.get("login", None)
+        password = request.form.get("password", None)
+
+        if login == "admin" and password == "admin":
+            response = make_response(redirect(url_for('get_list')))
+            response.set_cookie("admin", "True")
+            return response
+        else:
+            errors['error'] = "Wrong login or password"
+
+    return render_template('login.html', errors=errors)
+
+
+@app.route('/logout', methods=['GET'])
+def logout():
+    response = make_response(redirect(url_for('get_list')))
+    admin = request.cookies.get('admin', 'False')
+    if admin == "True":
+        response.set_cookie("admin", expires=0)
+
+    return response
 
 
 @app.errorhandler(404)
