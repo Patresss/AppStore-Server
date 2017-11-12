@@ -1,7 +1,7 @@
 $( document ).ready(function() {
 	$("#remove-img").on('click', function(e){
 		e.preventDefault();
-		$("#image").remove();
+		$("#image-contener").remove();
 		$("#ghimage").val("")
 	});
 

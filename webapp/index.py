@@ -48,7 +48,7 @@ def admin():
                 "version": "%s" % gversion,
             }
             if gimage != "":
-                data["image"] = "%s" % gimage,
+                data.update({'image': "%s" % gimage,})
             headers = {'Content-type': 'application/json','Accept': 'text/plain'}
             r = requests.post("http://localhost:8080/api/games",data=json.dumps(data),headers=headers)
 
@@ -111,7 +111,9 @@ def edit(id):
         gid = request.form.get("gid", 0)
         gimage = request.form.get('ghimage', "")
         if gimage == "":
-            gimage = base64.b64encode(request.files['gimage'].read())
+            gimage = request.files['gimage'].read()
+            if gimage != "":
+                gimage = base64.b64encode(gimage)
 
         if len(errors) == 0:
             data = {
@@ -120,8 +122,8 @@ def edit(id):
                 "name": "%s" % gname,
                 "version": "%s" % gversion,
             }
-            if gimage != "":
-                data["image"] = "%s" % gimage,
+            if gimage != None:
+                data.update({'image': "%s" % gimage,})
             headers = {'Content-type': 'application/json','Accept': 'text/plain'}
             r = requests.put("http://localhost:8080/api/games", data=json.dumps(data),headers=headers)
 
