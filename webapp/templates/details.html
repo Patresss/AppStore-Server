@@ -2,9 +2,21 @@
 {% set active_page = 'details' %} 
 {% block body %} 
  <div class="" id="details" role="tabpanel" aria-labelledby="v-pills-home-tab">
+<<<<<<< Updated upstream
     <h2>{{ game['name'] }}</h2>
     <p><small>Version: {{ game['version'] }}</small></p>
     
+=======
+
+    <p>
+        <h2>{{ game['name'] }}</h2>
+        {% if game['icon'] != "" %}
+        	<img height="25px" width="25px" src="data:image/png;base64,{{ game['icon'] }}" alt="Icon" >
+        {% endif %}
+        <small>Version: {{ game['version'] }}</small>
+    </p>
+
+>>>>>>> Stashed changes
     <div class="text-justify">
       {% if game['image'] %}
 
