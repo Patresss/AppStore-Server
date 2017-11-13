@@ -39,7 +39,12 @@ def admin():
         gdescription = request.form.get('gdescription', None)
         if gdescription == "":
             errors['gdescription'] = "Description can not be empty"
-        gimage = base64.b64encode(request.files['gimage'].read())
+        gimage = request.files['gimage'].read()
+        if gimage != "":
+            gimage = base64.b64encode(gimage)
+        gicon = request.files['gicon'].read()
+        if gicon!= "":
+            gicon = base64.b64encode(gicon)
 
         if len(errors) == 0:
 
@@ -59,6 +64,8 @@ def admin():
             }
             if gimage != "":
                 data.update({'image': "%s" % gimage,})
+            if gicon != "":
+                data.update({'icon': "%s" % gicon,})
             headers = {'Content-type': 'application/json','Accept': 'text/plain'}
             r = requests.post("http://localhost:8080/api/games",data=json.dumps(data),headers=headers)
 
@@ -124,6 +131,11 @@ def edit(id):
             gimage = request.files['gimage'].read()
             if gimage != "":
                 gimage = base64.b64encode(gimage)
+        gicon = request.form.get('ghicon', "")
+        if gicon == "":
+            gicon = request.files['gicon'].read()
+            if gicon!= "":
+                gicon = base64.b64encode(gicon)
 
         if len(errors) == 0:
 
@@ -145,6 +157,8 @@ def edit(id):
             }
             if gimage != None:
                 data.update({'image': "%s" % gimage,})
+            if gicon != None:
+                data.update({'icon': "%s" % gicon,})
             headers = {'Content-type': 'application/json','Accept': 'text/plain'}
             r = requests.put("http://localhost:8080/api/games", data=json.dumps(data),headers=headers)
 

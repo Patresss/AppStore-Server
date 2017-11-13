@@ -6,6 +6,7 @@
     <h2>Edit Game</h2>
     <input type="hidden" value="{{ values['id'] }}" name="gid" />
     <input type="hidden" value="{{ values['image'] }}" name="ghimage" id="ghimage" />
+    <input type="hidden" value="{{ values['icon'] }}" name="ghicon" id="ghicon" />
     <div class="form-group">
       <label for="name">Name</label>
       <input value="{% if values['name'] %}{{values['name']}}{% endif %}" type="text" name="gname" class="form-control{% if errors['gname'] %} is-invalid{% endif %}" placeholder="Game name"/>
@@ -33,10 +34,11 @@
         </div>
       {% endif %}
     </div>
+    <label for="gimage">Image</label>
     {% if values['image'] != "" %}
     <div class="form-group" id="image-contener">
         <img id="image" class="w-25" src="data:image/png;base64,{{ values['image'] }}" />
-		<a href="#" class="" id="remove-img">&#215;</a>
+		<a href="#" class="remove-img" id="remove-image">&#215;</a>
     </div>
     {% endif %}
     <div class="form-group">
@@ -45,7 +47,13 @@
         <span class="custom-file-control"></span>
       </label>
     </div>
-    <label for="description">Icon</label>
+    <label for="gicon">Icon</label>
+    {% if values['icon'] != "" %}
+    <div class="form-group" id="icon-contener">
+        <img id="image" class="w-25" src="data:image/png;base64,{{ values['icon'] }}" />
+		<a href="#" class="remove-img" id="remove-icon">&#215;</a>
+    </div>
+    {% endif %}
     <div class="form-group">
       <label class="custom-file">
         <input type="file" id="icon" name="gicon" class="custom-file-input">

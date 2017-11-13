@@ -45,11 +45,19 @@ body{
     border: 1px solid #ced4da;
     border-radius: 0 .25rem .25rem 0;
 }
-#remove-img{
+.remove-img{
     font-weight: bold;
     font-size: 30px;
     color: red;
     text-decoration: none;
+}
+.message > p{
+    word-wrap: break-word;
+}
+#messenger-contener{
+	overflow: auto;
+	max-height: 55vh;
+	min-height: 265px;
 }
 
 @media only screen and (min-width: 992px) {

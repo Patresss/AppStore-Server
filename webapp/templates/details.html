@@ -2,10 +2,11 @@
 {% set active_page = 'details' %}
 {% block body %}
  <div class="" id="details" role="tabpanel" aria-labelledby="v-pills-home-tab">
-
     <p>
         <h2>{{ game['name'] }}</h2>
-        <img height="25px" width="25px" src="data:image/png;base64,{{ game['icon'] }}" alt="Icon" >
+        {% if game['icon'] != "" %}
+        	<img height="25px" width="25px" src="data:image/png;base64,{{ game['icon'] }}" alt="Icon" >
+        {% endif %}
         <small>Version: {{ game['version'] }}</small>
     </p>
 
