@@ -4,8 +4,8 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
 
-    <include file="db/changelog/init.xml" relativeToChangelogFile="false"/>
-    <include file="db/changelog/201711021150.xml" relativeToChangelogFile="false"/>
-    <include file="db/changelog/201711061720.xml" relativeToChangelogFile="false"/>
+    <changeSet id="00000000000000" author="Patres">
+        <createSequence sequenceName="hibernate_sequence" startValue="1000" incrementBy="50"/>
+    </changeSet>
 
 </databaseChangeLog>

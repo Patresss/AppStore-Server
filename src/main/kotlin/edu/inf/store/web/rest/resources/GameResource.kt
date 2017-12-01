@@ -1,7 +1,7 @@
 package edu.inf.store.web.rest.resources
 
-import edu.inf.store.domain.Game
-import edu.inf.store.repository.GameRepository
+import edu.inf.store.service.GameService
+import edu.inf.store.service.dto.GameDto
 import edu.inf.store.web.rest.util.HeaderUtil
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -13,7 +13,7 @@ import javax.validation.Valid
 
 @RestController
 @RequestMapping("/api")
-class GameResource(private val gameRepository: GameRepository) {
+class GameResource(private val gameService: GameService) {
 
     companion object {
         private val ENTITY_NAME = "Game"
@@ -21,10 +21,10 @@ class GameResource(private val gameRepository: GameRepository) {
     }
 
     @GetMapping("/games/{id}")
-    fun getGame(@PathVariable id: Long): ResponseEntity<Game> {
+    fun getGame(@PathVariable id: Long): ResponseEntity<GameDto> {
         log.info("REST request to get Game : {}", id)
         return try {
-            val game = gameRepository.getOne(id)
+            val game = gameService.findOne(id)
             log.debug("Found Game : {}", game)
             ResponseEntity(game, HttpStatus.OK)
         } catch (e: Exception) {
@@ -34,41 +34,41 @@ class GameResource(private val gameRepository: GameRepository) {
     }
 
     @GetMapping("/games")
-    fun getAllGames(): ResponseEntity<List<Game>> {
+    fun getAllGames(): ResponseEntity<List<GameDto>> {
         log.info("REST request to get all Games")
-        val games = gameRepository.findAll()
+        val games = gameService.findAllWithoutChildren()
         return ResponseEntity(games, HttpStatus.OK)
     }
 
     @PostMapping("/games")
-    fun createGame(@Valid @RequestBody game: Game): ResponseEntity<Game> {
+    fun createGame(@Valid @RequestBody game: GameDto): ResponseEntity<GameDto> {
         log.info("REST request to create Game {} ", game)
         if (game.id != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new game cannot already have an ID")).body(null)
         }
-        val result = gameRepository.save(game)
+        val result = gameService.save(game)
         return ResponseEntity.created(URI("/api/games/${result.id}"))
                 .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.id.toString()))
                 .body(result)
     }
 
     @PutMapping("/games")
-    fun updateGame(@Valid @RequestBody game: Game): ResponseEntity<Game> {
+    fun updateGame(@Valid @RequestBody game: GameDto): ResponseEntity<GameDto> {
         log.info("REST request to update Game : {}", game)
         if (game.id == null) {
             return createGame(game)
         }
-        val result = gameRepository.save(game)
+        val result = gameService.save(game)
         return ResponseEntity.ok()
                 .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, game.id.toString()))
                 .body(result)
     }
 
     @DeleteMapping("/games/{id}")
-    fun deleteLesson(@PathVariable id: Long): ResponseEntity<Void> {
+    fun deleteGame(@PathVariable id: Long): ResponseEntity<Void> {
         log.info("REST request to delete Game : {}", id)
-        return if(gameRepository.existsById(id)) {
-            gameRepository.deleteById(id)
+        return if(gameService.existsById(id)) {
+            gameService.deleteById(id)
             ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build()
         } else {
             log.warn("Game not found id : {}", id)

@@ -1,35 +1,25 @@
-package edu.inf.store.domain
+package edu.inf.store.service.dto
 
-import javax.persistence.*
 import javax.validation.constraints.NotNull
 
-@Entity
-@Table(name = "game")
-data class Game(
+data class GameDto(
 
-        @Column(name = "name")
+        var id: Long? = null,
         @get:NotNull
         var name: String = "",
-
-        @Column(name = "description")
         var description: String = "",
-
-        @Column(name = "icon")
         var icon: ByteArray? = null,
-
-        @Column(name = "image")
         var image: ByteArray? = null,
+        var fileGames: List<FileGameDto> = emptyList(),
+        var fileGamesVersionName: List<String> = emptyList()
 
-        @OneToMany(cascade = arrayOf(CascadeType.ALL), orphanRemoval = true, mappedBy = "game")
-        var fileGames: List<FileGame> = emptyList()
-
-) : AbstractApplicationEntity() {
+) {
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as Game
+        other as GameDto
 
         if (id != other.id) return false
 
