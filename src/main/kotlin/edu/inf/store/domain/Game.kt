@@ -21,7 +21,7 @@ data class Game(
         var image: ByteArray? = null,
 
         @OneToMany(cascade = arrayOf(CascadeType.ALL), orphanRemoval = true, mappedBy = "game")
-        var fileGames: List<FileGame> = emptyList()
+        var GameContents: List<GameContent> = emptyList()
 
 ) : AbstractApplicationEntity() {
 

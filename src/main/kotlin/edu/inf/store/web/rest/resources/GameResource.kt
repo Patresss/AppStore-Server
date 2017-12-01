@@ -11,6 +11,10 @@ import org.springframework.web.bind.annotation.*
 import java.net.URI
 import javax.validation.Valid
 
+
+/**
+ * REST controller do zarządzania Grami
+ */
 @RestController
 @RequestMapping("/api")
 class GameResource(private val gameService: GameService) {
@@ -20,6 +24,13 @@ class GameResource(private val gameService: GameService) {
         val log: Logger = LoggerFactory.getLogger(GameResource::class.java)
     }
 
+
+    /**
+     * GET  /games/:id : Pobiera Grę o podanym ID
+     *
+     * @param id Id Gry która ma zostać zwrócona
+     * @return ResponseEntity ze statusem 200 (OK) oraz Gra o podanym ID lub status 404 (Not Found)
+     */
     @GetMapping("/games/{id}")
     fun getGame(@PathVariable id: Long): ResponseEntity<GameDto> {
         log.info("REST request to get Game : {}", id)
@@ -33,6 +44,11 @@ class GameResource(private val gameService: GameService) {
         }
     }
 
+    /**
+     * GET  /games : Pobranie wszystkich Gier. Lista gier nie posiada plików z Grą.
+     *
+     * @return ResponseEntity ze statusem 200 (OK) oraz lista Gier
+     */
     @GetMapping("/games")
     fun getAllGames(): ResponseEntity<List<GameDto>> {
         log.info("REST request to get all Games")
@@ -40,6 +56,13 @@ class GameResource(private val gameService: GameService) {
         return ResponseEntity(games, HttpStatus.OK)
     }
 
+
+    /**
+     * POST  /games : Tworzy Grę
+     *
+     * @param game Gra do stworzenia
+     * @return ResponseEntity ze statusem 201 (Created) i stworzona gra lub status 400 (Bad Request) jeżeli Gra ma już ID
+     */
     @PostMapping("/games")
     fun createGame(@Valid @RequestBody game: GameDto): ResponseEntity<GameDto> {
         log.info("REST request to create Game {} ", game)
@@ -52,6 +75,15 @@ class GameResource(private val gameService: GameService) {
                 .body(result)
     }
 
+
+    /**
+     * PUT  /games : Aktualizuje istniejącą gre
+     *
+     * @param game Gra do modyfikacji
+     * @return ResponseEntity ze statusem 200 (OK) i zaktualizowana gra
+     * lub status 400 (Bad Request) jeżeli Gra nie jest poprawnie zwalidowana,
+     * lub status 500 (Internal Server Error) jeżeli Gra nie może zostać zmodyfikowana
+     */
     @PutMapping("/games")
     fun updateGame(@Valid @RequestBody game: GameDto): ResponseEntity<GameDto> {
         log.info("REST request to update Game : {}", game)
@@ -64,6 +96,13 @@ class GameResource(private val gameService: GameService) {
                 .body(result)
     }
 
+
+    /**
+     * DELETE  /games/:id : Usuwa Grę o podanym id
+     *
+     * @param id Id Gry która ma zostać usunięta
+     * @return ResponseEntity ze statusem 200 (OK)
+     */
     @DeleteMapping("/games/{id}")
     fun deleteGame(@PathVariable id: Long): ResponseEntity<Void> {
         log.info("REST request to delete Game : {}", id)

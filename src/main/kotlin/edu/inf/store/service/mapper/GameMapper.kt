@@ -5,7 +5,7 @@ import edu.inf.store.service.dto.GameDto
 import org.springframework.stereotype.Service
 
 @Service
-open class GameMapper(var fileGameMapper: FileGameMapper) : EntityMapper<Game, GameDto>() {
+class GameMapper(var gameContentMapper: GameContentMapper) : EntityMapper<Game, GameDto>() {
 
 
 
@@ -17,7 +17,7 @@ open class GameMapper(var fileGameMapper: FileGameMapper) : EntityMapper<Game, G
                     description = entityDto.description
                     icon = entityDto.icon
                     image = entityDto.image
-                    fileGames = entityDto.fileGames.map { fileGameMapper.toEntity(it) }
+                    GameContents = entityDto.GameContents.map { gameContentMapper.toEntity(it) }
                 }
     }
 
@@ -29,7 +29,7 @@ open class GameMapper(var fileGameMapper: FileGameMapper) : EntityMapper<Game, G
                 description = entity.description
                 icon = entity.icon
                 image = entity.image
-                fileGames = entity.fileGames.map { fileGameMapper.toDto(it) }
+                GameContents = entity.GameContents.map { gameContentMapper.toDto(it) }
             }
     }
 

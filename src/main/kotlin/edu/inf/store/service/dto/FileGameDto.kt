@@ -2,7 +2,7 @@ package edu.inf.store.service.dto
 
 import javax.validation.constraints.NotNull
 
-data class FileGameDto(
+data class GameContentDto(
 
         var id: Long? = null,
         @get:NotNull
@@ -17,7 +17,7 @@ data class FileGameDto(
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as FileGameDto
+        other as GameContentDto
 
         if (id != other.id) return false
 

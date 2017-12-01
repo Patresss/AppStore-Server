@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional
 class GameService(entityRepository: GameRepository, entityMapper: EntityMapper<Game, GameDto>) : EntityService<Game, GameDto, GameRepository>(entityRepository, entityMapper) {
 
     companion object {
-        private val log: Logger = LoggerFactory.getLogger(FileGameService::class.java)
+        private val log: Logger = LoggerFactory.getLogger(GameContentService::class.java)
     }
 
     @Transactional(readOnly = true)
