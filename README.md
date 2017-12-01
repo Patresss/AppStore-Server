@@ -1,5 +1,6 @@
 # AppStore-Server
 
+## Instrukcja
 Do uruchomienia potrzeba gradle w wersji 4+  
 https://gradle.org/releases/
 
@@ -7,6 +8,7 @@ Executable jar - [download jar](https://github.com/Patresss/AppStore-Server/raw/
 
 Aby uruchomić: ```java -jar AppStore-Server.jar```
 
+## Baza danych
 **Baza dev:** http://localhost:8080/h2
 ```
 Driver Class:	org.h2.Driver
@@ -15,20 +17,47 @@ User Name:	store
 Password:	
 ```
 
-**Socket:**
+## Socket:
 - Chat w http://localhost:8080
 - Url: ws://127.0.0.1:8080/chat
 - Send("/app/chat", "{\"name\":\"Patryk\", \"text\":\"Hello\"}
 - Subscribe("/topic/messages")
 
-**Rest:**
-- Swagger: http://localhost:8080/swagger-ui.html
-- Welcome 
-    - http://localhost:8080/api/welcome
-    - http://localhost:8080/api/welcome/{name}
-- Game (cały CRUD)
-    - http://localhost:8080/api/games
+## Rest:
+Requesty można wykonać w **Swagger**ze http://localhost:8080/swagger-ui.html
 
+### Game
+#### getGame()
+ - Pobiera Grę o podanym ID
+ - GET /api/games/{id}
+#### getAllGames()
+ - Pobranie wszystkich Gier. Lista gier nie posiada plików z Grą.
+ - GET /api/games
+#### createGame()
+- Tworzy Grę
+- POST /api/games
+#### updateGame()
+- Aktualizuje istniejącą gre
+- PUT /api/games/{id}
+#### deleteGame()
+- Usuwa Grę o podanym id
+- DELETE /api/games/{id}
+ 
+### Game Content
+#### getGameContent()
+- Pobiera Zawartość Gry o podanym ID
+- GET /api/game-contents/{id}
+#### getNewestVersionOfGameContent()
+- Pobiera najnowszą Zawartość Gry dla podanego ID Gry
+- GET /api/game-contents/newest-version/{gameId}
+#### createGameContent()
+- Tworzy Zawartość Gry
+- POST /api/game-contents
+#### deleteGameContent()
+- Usuwa Zawartość Gry o podanym id
+- DELETE /api/game-contents/{id}
+
+## Profile i gradle
 Aby uruchomić: ```gradle bootRun```
 
 Są dwa profile:
