@@ -12,4 +12,5 @@ interface FileGameRepository : JpaRepository<FileGame, Long> {
     @Query("update FileGame fileGame set fileGame.newestVersion = false where fileGame.game.id = :gameId and fileGame.newestVersion = true")
     fun removeStatusOfNewestVersion(@Param("gameId") gameId: Long?)
 
+    fun findByGameIdAndNewestVersionTrue(@Param("gameId") gameId: Long) : FileGame
 }

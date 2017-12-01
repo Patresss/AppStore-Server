@@ -12,14 +12,14 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 @Transactional
-open class GameService(entityRepository: GameRepository, entityMapper: EntityMapper<Game, GameDto>) : EntityService<Game, GameDto, GameRepository>(entityRepository, entityMapper) {
+class GameService(entityRepository: GameRepository, entityMapper: EntityMapper<Game, GameDto>) : EntityService<Game, GameDto, GameRepository>(entityRepository, entityMapper) {
 
     companion object {
         private val log: Logger = LoggerFactory.getLogger(FileGameService::class.java)
     }
 
     @Transactional(readOnly = true)
-    open fun findAllWithoutChildren(): List<GameDto> {
+    fun findAllWithoutChildren(): List<GameDto> {
         log.debug("Request to get all {}", getEntityName())
         return entityRepository.findAll().map { entityMapper.toDtoWithoutChildren(it) }
     }

@@ -41,7 +41,6 @@ open class GameMapper(var fileGameMapper: FileGameMapper) : EntityMapper<Game, G
                     description = it.description
                     icon = it.icon
                     image = it.image
-                    fileGamesVersionName = it.fileGames.map { it.version }
                 }
     }
 

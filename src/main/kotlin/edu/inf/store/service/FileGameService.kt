@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 @Transactional
-open class FileGameService(entityRepository: FileGameRepository, entityMapper: EntityMapper<FileGame, FileGameDto>) : EntityService<FileGame, FileGameDto, FileGameRepository>(entityRepository, entityMapper) {
+class FileGameService(entityRepository: FileGameRepository, entityMapper: EntityMapper<FileGame, FileGameDto>) : EntityService<FileGame, FileGameDto, FileGameRepository>(entityRepository, entityMapper) {
 
     companion object {
         private val log: Logger = LoggerFactory.getLogger(FileGameService::class.java)
@@ -24,6 +24,13 @@ open class FileGameService(entityRepository: FileGameRepository, entityMapper: E
             entityRepository.removeStatusOfNewestVersion(entityDto.gameId)
         }
         return super.save(entityDto)
+    }
+
+    @Transactional(readOnly = true)
+    fun findByNewestVersion(gameId: Long): FileGameDto {
+        log.debug("Request to get newest version by game id $gameId")
+        val entity = entityRepository.findByGameIdAndNewestVersionTrue(gameId)
+        return entityMapper.toDto(entity)
     }
 
 }

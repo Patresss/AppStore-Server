@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 @Service
-open class FileGameMapper : EntityMapper<FileGame, FileGameDto>() {
+class FileGameMapper : EntityMapper<FileGame, FileGameDto>() {
 
     @Autowired
     lateinit private var gameRepository: GameRepository

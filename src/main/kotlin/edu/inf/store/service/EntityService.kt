@@ -4,8 +4,6 @@ import edu.inf.store.domain.AbstractApplicationEntity
 import edu.inf.store.service.mapper.EntityMapper
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import org.springframework.data.domain.Page
-import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -31,7 +29,6 @@ abstract class EntityService<EntityType : AbstractApplicationEntity, EntityDtoTy
         entity = entityRepository.save(entity)
         return entityMapper.toDto(entity)
     }
-
 
     @Transactional(readOnly = true)
     open fun findOne(id: Long?): EntityDtoType {

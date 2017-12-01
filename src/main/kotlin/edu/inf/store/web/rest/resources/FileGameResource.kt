@@ -21,7 +21,7 @@ class FileGameResource(private val fileGameService: FileGameService) {
     }
 
     @GetMapping("/file-game/{id}")
-    fun getGame(@PathVariable id: Long): ResponseEntity<FileGameDto> {
+    fun getFileGame(@PathVariable id: Long): ResponseEntity<FileGameDto> {
         log.info("REST request to get File Game : {}", id)
         return try {
             val fileGame = fileGameService.findOne(id)
@@ -29,6 +29,19 @@ class FileGameResource(private val fileGameService: FileGameService) {
             ResponseEntity(fileGame, HttpStatus.OK)
         } catch (e: Exception) {
             log.warn("File Game not found id : {}", id)
+            ResponseEntity(HttpStatus.NOT_FOUND)
+        }
+    }
+
+    @GetMapping("/file-game/newest-version/{gameId}")
+    fun getNewestVersionOfFileGame(@PathVariable gameId: Long): ResponseEntity<FileGameDto> {
+        log.info("REST request to get newest version of File Game : {}", gameId)
+        return try {
+            val fileGame = fileGameService.findByNewestVersion(gameId)
+            log.debug("Newest version of File Game : {}", fileGame)
+            ResponseEntity(fileGame, HttpStatus.OK)
+        } catch (e: Exception) {
+            log.warn("Newest version of File Game not found id : {}", gameId)
             ResponseEntity(HttpStatus.NOT_FOUND)
         }
     }
