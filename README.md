@@ -47,11 +47,11 @@ Requesty można wykonać w **Swagger**ze http://localhost:8080/swagger-ui.html
 #### getGameContent()
 - Pobiera Zawartość Gry o podanym ID
 - GET /api/game-contents/{id}
-#### getNewestVersionOfGameContent()
-- Pobiera najnowszą Zawartość Gry dla podanego ID Gry
-- GET /api/game-contents/newest-version/{gameId}
 #### createGameContent()
 - Tworzy Zawartość Gry
+- POST /api/game-contents
+#### updateGameContent()
+- Aktualizuje istniejącą Zawartość Gry
 - POST /api/game-contents
 #### deleteGameContent()
 - Usuwa Zawartość Gry o podanym id
