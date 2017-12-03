@@ -7,19 +7,12 @@ import javax.validation.constraints.NotNull
 @Table(name = "game_content")
 data class GameContent(
 
-        @ManyToOne
-        @get:NotNull
-        var game: Game? = null,
-
         @Column(name = "file")
         @get:NotNull
         var file: ByteArray? = null,
 
         @Column(name = "version")
-        var version: String = "",
-
-        @Column(name = "newest_version")
-        var newestVersion: Boolean = true
+        var version: String = ""
 
 ) : AbstractApplicationEntity() {
 

@@ -20,8 +20,8 @@ data class Game(
         @Column(name = "image")
         var image: ByteArray? = null,
 
-        @OneToMany(cascade = arrayOf(CascadeType.ALL), orphanRemoval = true, mappedBy = "game")
-        var GameContents: List<GameContent> = emptyList()
+        @OneToOne(cascade = [(CascadeType.ALL)], orphanRemoval = true)
+        var gameContent: GameContent? = null
 
 ) : AbstractApplicationEntity() {
 

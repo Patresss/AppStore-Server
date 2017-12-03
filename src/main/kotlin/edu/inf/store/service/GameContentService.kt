@@ -12,25 +12,4 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 @Transactional
-class GameContentService(entityRepository: GameContentRepository, entityMapper: EntityMapper<GameContent, GameContentDto>) : EntityService<GameContent, GameContentDto, GameContentRepository>(entityRepository, entityMapper) {
-
-    companion object {
-        private val log: Logger = LoggerFactory.getLogger(GameContentService::class.java)
-    }
-
-    override fun save(entityDto: GameContentDto): GameContentDto {
-        if (entityDto.newestVersion) {
-            log.debug("Change current newest version to false by game id ${entityDto.gameId}")
-            entityRepository.removeStatusOfNewestVersion(entityDto.gameId)
-        }
-        return super.save(entityDto)
-    }
-
-    @Transactional(readOnly = true)
-    fun findByNewestVersion(gameId: Long): GameContentDto {
-        log.debug("Request to get newest version by game id $gameId")
-        val entity = entityRepository.findByGameIdAndNewestVersionTrue(gameId)
-        return entityMapper.toDto(entity)
-    }
-
-}
+class GameContentService(entityRepository: GameContentRepository, entityMapper: EntityMapper<GameContent, GameContentDto>) : EntityService<GameContent, GameContentDto, GameContentRepository>(entityRepository, entityMapper)

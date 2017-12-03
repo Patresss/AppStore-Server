@@ -16,10 +16,8 @@ class GameContentMapper : EntityMapper<GameContent, GameContentDto>() {
         return GameContent()
                 .apply {
                     id = entityDto.id
-                    game = gameRepository.getOne(entityDto.gameId)
                     file = entityDto.file
                     version = entityDto.version
-                    newestVersion = entityDto.newestVersion
                 }
     }
 
@@ -27,10 +25,8 @@ class GameContentMapper : EntityMapper<GameContent, GameContentDto>() {
         return GameContentDto()
                 .apply {
                     id = entity.id
-                    gameId = entity.game?.id
                     file = entity.file
                     version = entity.version
-                    newestVersion = entity.newestVersion
                 }
     }
 }

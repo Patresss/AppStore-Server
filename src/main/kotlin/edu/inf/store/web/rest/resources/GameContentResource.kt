@@ -16,7 +16,7 @@ import javax.validation.Valid
  */
 @RestController
 @RequestMapping("/api")
-class GameContentResource(private val GameContentService: GameContentService) {
+class GameContentResource(private val gameContentService: GameContentService) {
 
     companion object {
         private val ENTITY_NAME = "GameContent"
@@ -33,7 +33,7 @@ class GameContentResource(private val GameContentService: GameContentService) {
     fun getGameContent(@PathVariable id: Long): ResponseEntity<GameContentDto> {
         log.info("REST request to get Game Content : {}", id)
         return try {
-            val gameContent = GameContentService.findOne(id)
+            val gameContent = gameContentService.findOne(id)
             log.debug("Found Game Content : {}", gameContent)
             ResponseEntity(gameContent, HttpStatus.OK)
         } catch (e: Exception) {
@@ -41,27 +41,6 @@ class GameContentResource(private val GameContentService: GameContentService) {
             ResponseEntity(HttpStatus.NOT_FOUND)
         }
     }
-
-
-    /**
-     * GET  /game-contents/newest-version/:gameId : Pobiera najnowszą Zawartość Gry dla podanego ID Gry
-     *
-     * @param gameId Id Gry dla której ma zostać zwrócona Zawartość Gry
-     * @return ResponseEntity ze statusem 200 (OK) oraz Zawartość Gry o podanym ID Gry lub status 404 (Not Found)
-     */
-    @GetMapping("/game-contents/newest-version/{gameId}")
-    fun getNewestVersionOfGameContent(@PathVariable gameId: Long): ResponseEntity<GameContentDto> {
-        log.info("REST request to get newest version of Game Content : {}", gameId)
-        return try {
-            val gameContent = GameContentService.findByNewestVersion(gameId)
-            log.debug("Newest version of Game Content : {}", gameContent)
-            ResponseEntity(gameContent, HttpStatus.OK)
-        } catch (e: Exception) {
-            log.warn("Newest version of Game Content not found id : {}", gameId)
-            ResponseEntity(HttpStatus.NOT_FOUND)
-        }
-    }
-
 
     /**
      * POST  /game-contents : Tworzy Zawartość Gry
@@ -72,15 +51,35 @@ class GameContentResource(private val GameContentService: GameContentService) {
     @PostMapping("/game-contents")
     fun createGameContent(@Valid @RequestBody gameContent: GameContentDto): ResponseEntity<GameContentDto> {
         log.info("REST request to create Game Content {} ", gameContent)
-        gameContent.newestVersion = true
         if (gameContent.id != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new Game Content cannot already have an ID")).body(null)
         }
-        val result = GameContentService.save(gameContent)
+        val result = gameContentService.save(gameContent)
         return ResponseEntity.created(URI("/api/game-contents/${result.id}"))
                 .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.id.toString()))
                 .body(result)
     }
+
+    /**
+     * PUT  /game-contents : Aktualizuje istniejącą Zawartość Gry
+     *
+     * @param gameContent Zawartość Gry do modyfikacji
+     * @return ResponseEntity ze statusem 200 (OK) i zaktualizowana Zawartość Gry
+     * lub status 400 (Bad Request) jeżeli Zawartość Gry nie jest poprawnie zwalidowana,
+     * lub status 500 (Internal Server Error) jeżeli Zawartość Gry nie może zostać zmodyfikowana
+     */
+    @PutMapping("/game-contents")
+    fun updateGameContent(@Valid @RequestBody gameContent: GameContentDto): ResponseEntity<GameContentDto> {
+        GameResource.log.info("REST request to update Game Content : {}", gameContent)
+        if (gameContent.id == null) {
+            return createGameContent(gameContent)
+        }
+        val result = gameContentService.save(gameContent)
+        return ResponseEntity.ok()
+                .headers(HeaderUtil.createEntityUpdateAlert(GameContentResource.ENTITY_NAME, gameContent.id.toString()))
+                .body(result)
+    }
+
 
     /**
      * DELETE  /game-contents/:id : Usuwa Zawartość Gry o podanym id
@@ -91,8 +90,8 @@ class GameContentResource(private val GameContentService: GameContentService) {
     @DeleteMapping("/game-contents/{id}")
     fun deleteGameContent(@PathVariable id: Long): ResponseEntity<Void> {
         log.info("REST request to delete Game Content : {}", id)
-        return if(GameContentService.existsById(id)) {
-            GameContentService.deleteById(id)
+        return if(gameContentService.existsById(id)) {
+            gameContentService.deleteById(id)
             ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build()
         } else {
             log.warn("Game not found id : {}", id)

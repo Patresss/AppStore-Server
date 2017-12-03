@@ -7,8 +7,6 @@ import org.springframework.stereotype.Service
 @Service
 class GameMapper(var gameContentMapper: GameContentMapper) : EntityMapper<Game, GameDto>() {
 
-
-
     override fun toEntity(entityDto: GameDto): Game {
         return Game()
                 .apply {
@@ -17,7 +15,9 @@ class GameMapper(var gameContentMapper: GameContentMapper) : EntityMapper<Game, 
                     description = entityDto.description
                     icon = entityDto.icon
                     image = entityDto.image
-                    GameContents = entityDto.GameContents.map { gameContentMapper.toEntity(it) }
+                    entityDto.gameContent?.let { content ->
+                        gameContent = gameContentMapper.toEntity(content)
+                    }
                 }
     }
 
@@ -29,7 +29,9 @@ class GameMapper(var gameContentMapper: GameContentMapper) : EntityMapper<Game, 
                 description = entity.description
                 icon = entity.icon
                 image = entity.image
-                GameContents = entity.GameContents.map { gameContentMapper.toDto(it) }
+                entity.gameContent?.let { content ->
+                    gameContent = gameContentMapper.toDto(content)
+                }
             }
     }
 

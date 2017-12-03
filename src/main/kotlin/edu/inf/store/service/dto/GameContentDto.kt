@@ -6,11 +6,8 @@ data class GameContentDto(
 
         var id: Long? = null,
         @get:NotNull
-        var gameId: Long? = null,
-        @get:NotNull
         var file: ByteArray? = null,
-        var version: String = "",
-        var newestVersion: Boolean = true
+        var version: String = ""
 ) {
 
     override fun equals(other: Any?): Boolean {

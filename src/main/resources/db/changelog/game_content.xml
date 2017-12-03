@@ -9,16 +9,10 @@
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="game_id" type="bigint">
-                <constraints nullable="false"
-                             foreignKeyName="fk_game_id"
-                             references="game(id)"/>
-            </column>
             <column name="file" type="longblob"/>
             <column name="version" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="newest_version" type="boolean"/>
         </createTable>
     </changeSet>
 

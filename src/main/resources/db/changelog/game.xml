@@ -15,6 +15,11 @@
             <column name="description" type="varchar(2048)"/>
             <column name="image" type="longblob"/>
             <column name="icon" type="longblob"/>
+            <column name="game_content_id" type="bigint">
+                <constraints nullable="true"
+                             foreignKeyName="fk_game_content_id"
+                             references="game_content(id)"/>
+            </column>
         </createTable>
     </changeSet>
 
