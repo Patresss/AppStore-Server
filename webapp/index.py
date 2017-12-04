@@ -41,31 +41,30 @@ def admin():
             errors['gdescription'] = "Description can not be empty"
         gimage = request.files['gimage'].read()
         if gimage != "":
-            gimage = base64.b64encode(gimage)
+            gimage = base64.b64encode(gimage).decode('utf-8')
         gicon = request.files['gicon'].read()
         if gicon!= "":
-            gicon = base64.b64encode(gicon)
+            gicon = base64.b64encode(gicon).decode('utf-8')
+        gicon = request.files['gicon'].read()
+        if gicon!= "":
+            gicon = base64.b64encode(gicon).decode('utf-8')
+        gfile = request.files['gfile'].read()
+        if gfile!= "":
+            gfile = base64.b64encode(gfile).decode('utf-8')
 
         if len(errors) == 0:
 
-            baseEncodedImage = "%s" % base64.b64encode(request.files['gimage'].read())
-            if len(baseEncodedImage) >= 3:
-                baseEncodedImage = baseEncodedImage[2:-1]
-
-            baseEncodedIcon = "%s" % base64.b64encode(request.files['gicon'].read())
-            if len(baseEncodedImage) >= 3:
-                baseEncodedIcon = baseEncodedIcon[2:-1]
             data = {
                 "description": "%s" % gdescription,
-                "image": baseEncodedImage,
-                "icon": baseEncodedIcon,
                 "name": "%s" % gname,
                 "version": "%s" % gversion,
             }
-            if gimage != "":
-                data.update({'image': "%s" % gimage,})
-            if gicon != "":
+            if gimage != None:
+                data.update({"image": "%s" % gimage,})
+            if gicon != None:
                 data.update({'icon': "%s" % gicon,})
+            if gfile != None:
+                data.update({'gameContent':{'file': "%s" % gfile,}})
             headers = {'Content-type': 'application/json','Accept': 'text/plain'}
             r = requests.post("http://localhost:8080/api/games",data=json.dumps(data),headers=headers)
 
@@ -130,28 +129,18 @@ def edit(id):
         if gimage == "":
             gimage = request.files['gimage'].read()
             if gimage != "":
-                gimage = base64.b64encode(gimage)
+                gimage = base64.b64encode(gimage).decode('utf-8')
         gicon = request.form.get('ghicon', "")
         if gicon == "":
             gicon = request.files['gicon'].read()
             if gicon!= "":
-                gicon = base64.b64encode(gicon)
+                gicon = base64.b64encode(gicon).decode('utf-8')
 
         if len(errors) == 0:
-
-            baseEncodedImage = "%s" % base64.b64encode(request.files['gimage'].read())
-            if len(baseEncodedImage) >= 3:
-                baseEncodedImage = baseEncodedImage[2:-1]
-
-            baseEncodedIcon = "%s" % base64.b64encode(request.files['gicon'].read())
-            if len(baseEncodedImage) >= 3:
-                baseEncodedIcon = baseEncodedIcon[2:-1]
 
             data = {
                 "id" : "%s" % gid,
                 "description": "%s" % gdescription,
-                "image": baseEncodedImage,
-                "icon": baseEncodedIcon,
                 "name": "%s" % gname,
                 "version": "%s" % gversion,
             }

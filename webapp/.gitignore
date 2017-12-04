@@ -1,3 +1,5 @@
 .ropeproject
 env
 *.pyc
+.yavide_proj
+.yavide_session
