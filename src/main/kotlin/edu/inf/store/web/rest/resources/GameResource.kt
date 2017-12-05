@@ -52,7 +52,7 @@ class GameResource(private val gameService: GameService) {
     @GetMapping("/games")
     fun getAllGames(): ResponseEntity<List<GameDto>> {
         log.info("REST request to get all Games")
-        val games = gameService.findAllWithoutChildren()
+        val games = gameService.findAllWithoutFile()
         return ResponseEntity(games, HttpStatus.OK)
     }
 

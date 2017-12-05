@@ -1,11 +1,13 @@
 package edu.inf.store.service.mapper
 
-abstract class EntityMapper<EntityType, EntityDtoType> {
+import edu.inf.store.domain.Game
+import edu.inf.store.service.dto.GameDto
 
-    abstract fun toEntity(entityDto: EntityDtoType): EntityType
+interface  EntityMapper<EntityType, EntityDtoType> {
 
-    abstract fun toDto(entity: EntityType): EntityDtoType
+     fun toEntity(entityDto: EntityDtoType): EntityType
 
-    open fun toDtoWithoutChildren(it: EntityType): EntityDtoType = toDto(it)
+     fun toDto(entity: EntityType): EntityDtoType
 
+     fun toListObjectDto(it: Game): GameDto
 }

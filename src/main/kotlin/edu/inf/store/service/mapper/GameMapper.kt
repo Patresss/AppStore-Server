@@ -5,7 +5,7 @@ import edu.inf.store.service.dto.GameDto
 import org.springframework.stereotype.Service
 
 @Service
-class GameMapper(var gameContentMapper: GameContentMapper) : EntityMapper<Game, GameDto>() {
+class GameMapper : EntityMapper<Game, GameDto> {
 
     override fun toEntity(entityDto: GameDto): Game {
         return Game()
@@ -15,9 +15,8 @@ class GameMapper(var gameContentMapper: GameContentMapper) : EntityMapper<Game, 
                     description = entityDto.description
                     icon = entityDto.icon
                     image = entityDto.image
-                    entityDto.gameContent?.let { content ->
-                        gameContent = gameContentMapper.toEntity(content)
-                    }
+                    file = entityDto.file
+                    version = entityDto.version
                 }
     }
 
@@ -29,13 +28,12 @@ class GameMapper(var gameContentMapper: GameContentMapper) : EntityMapper<Game, 
                 description = entity.description
                 icon = entity.icon
                 image = entity.image
-                entity.gameContent?.let { content ->
-                    gameContent = gameContentMapper.toDto(content)
-                }
+                file = entity.file
+                version = entity.version
             }
     }
 
-    override fun toDtoWithoutChildren(it: Game): GameDto {
+    override fun toListObjectDto(it: Game): GameDto {
         return GameDto()
                 .apply {
                     id = it.id
@@ -43,6 +41,7 @@ class GameMapper(var gameContentMapper: GameContentMapper) : EntityMapper<Game, 
                     description = it.description
                     icon = it.icon
                     image = it.image
+                    version = it.version
                 }
     }
 
