@@ -7,6 +7,7 @@
     <input type="hidden" value="{{ values['id'] }}" name="gid" />
     <input type="hidden" value="{{ values['image'] }}" name="ghimage" id="ghimage" />
     <input type="hidden" value="{{ values['icon'] }}" name="ghicon" id="ghicon" />
+    <input type="hidden" value="{{ values['gameContent']['file'] }}" name="ghfile" id="ghfile" />
     <div class="form-group">
       <label for="name">Name</label>
       <input value="{% if values['name'] %}{{values['name']}}{% endif %}" type="text" name="gname" class="form-control{% if errors['gname'] %} is-invalid{% endif %}" placeholder="Game name"/>
@@ -18,7 +19,7 @@
     </div>
     <div class="form-group">
       <label for="version">Version</label>
-      <input value="{% if values['version'] %}{{values['version']}}{% endif %}" type="text" name="gversion" class="form-control{% if errors['gversion'] %} is-invalid{% endif %}" placeholder="Game version" />
+      <input value="{% if values['gameContent']['version'] %}{{values['gameContent']['version']}}{% endif %}" type="text" name="gversion" class="form-control{% if errors['gversion'] %} is-invalid{% endif %}" placeholder="Game version" />
       {% if errors['gversion'] %}
         <div class="invalid-feedback">
           {{ errors['gversion'] }}
@@ -60,6 +61,15 @@
         <span class="custom-file-control"></span>
       </label>
     </div>
+
+    <label for="description">File</label>
+    <div class="form-group">
+      <label class="custom-file">
+        <input type="file" id="file" name="gfile" class="custom-file-input">
+        <span class="custom-file-control"></span>
+      </label>
+    </div>
+ 
 
     <button type="submit" class="btn btn-primary">Save</button>
 

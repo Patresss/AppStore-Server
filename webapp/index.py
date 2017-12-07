@@ -45,9 +45,6 @@ def admin():
         gicon = request.files['gicon'].read()
         if gicon!= "":
             gicon = base64.b64encode(gicon).decode('utf-8')
-        gicon = request.files['gicon'].read()
-        if gicon!= "":
-            gicon = base64.b64encode(gicon).decode('utf-8')
         gfile = request.files['gfile'].read()
         if gfile!= "":
             gfile = base64.b64encode(gfile).decode('utf-8')
@@ -57,14 +54,16 @@ def admin():
             data = {
                 "description": "%s" % gdescription,
                 "name": "%s" % gname,
-                "version": "%s" % gversion,
+                #"version": "%s" % gversion,
             }
             if gimage != None:
                 data.update({"image": "%s" % gimage,})
             if gicon != None:
                 data.update({'icon': "%s" % gicon,})
             if gfile != None:
-                data.update({'gameContent':{'file': "%s" % gfile,}})
+                data.update({'gameContent':{'file': "%s" % gfile, 'version': "%s" % gversion,}})
+
+            print(data)
             headers = {'Content-type': 'application/json','Accept': 'text/plain'}
             r = requests.post("http://localhost:8080/api/games",data=json.dumps(data),headers=headers)
 
@@ -135,6 +134,11 @@ def edit(id):
             gicon = request.files['gicon'].read()
             if gicon!= "":
                 gicon = base64.b64encode(gicon).decode('utf-8')
+        gfile = request.form.get('ghfile', "")
+        if gfile == "":
+            gfile = request.files['gfile'].read()
+            if gfile!= "":
+                gfile = base64.b64encode(gfile).decode('utf-8')
 
         if len(errors) == 0:
 
@@ -142,12 +146,14 @@ def edit(id):
                 "id" : "%s" % gid,
                 "description": "%s" % gdescription,
                 "name": "%s" % gname,
-                "version": "%s" % gversion,
+                #"version": "%s" % gversion,
             }
             if gimage != None:
                 data.update({'image': "%s" % gimage,})
             if gicon != None:
                 data.update({'icon': "%s" % gicon,})
+            if gfile != None:
+                data.update({'gameContent':{'file': "%s" % gfile, 'version': "%s" % gversion,}})
             headers = {'Content-type': 'application/json','Accept': 'text/plain'}
             r = requests.put("http://localhost:8080/api/games", data=json.dumps(data),headers=headers)
 
