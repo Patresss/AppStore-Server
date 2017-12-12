@@ -20,8 +20,13 @@ data class Game(
         @Column(name = "image")
         var image: ByteArray? = null,
 
-        @OneToOne(cascade = [(CascadeType.ALL)], orphanRemoval = true)
-        var gameContent: GameContent? = null
+        @Column(name = "version")
+        var version: String = "",
+
+        @Column(name = "file")
+        @get:NotNull
+        var file: ByteArray? = null
+
 
 ) : AbstractApplicationEntity() {
 
