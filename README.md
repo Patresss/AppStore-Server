@@ -43,20 +43,6 @@ Requesty można wykonać w **Swagger**ze http://localhost:8080/swagger-ui.html
 - Usuwa Grę o podanym id
 - DELETE /api/games/{id}
  
-### Game Content
-#### getGameContent()
-- Pobiera Zawartość Gry o podanym ID
-- GET /api/game-contents/{id}
-#### createGameContent()
-- Tworzy Zawartość Gry
-- POST /api/game-contents
-#### updateGameContent()
-- Aktualizuje istniejącą Zawartość Gry
-- POST /api/game-contents
-#### deleteGameContent()
-- Usuwa Zawartość Gry o podanym id
-- DELETE /api/game-contents/{id}
-
 ## Profile i gradle
 Aby uruchomić: ```gradle bootRun```
 

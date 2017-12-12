@@ -10,7 +10,8 @@ data class GameDto(
         var description: String = "",
         var icon: ByteArray? = null,
         var image: ByteArray? = null,
-        var gameContent: GameContentDto? = null
+        var file: ByteArray? = null,
+        var version: String = ""
 ) {
 
     override fun equals(other: Any?): Boolean {
