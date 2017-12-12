@@ -16,3 +16,4 @@ Aby uruchomić aplikacę należy stworzyć wirtualne środowisko w którym aplik
 ### Uruchomienie aplikacji:
 * będęc w wirtualnym srodowisku należy wykonać komende `python2 -m flask run`
 * aplikacja domyślnie jest uruchamiana na adresie http://localhost:5000/
+* w pliku index.py na znajduje sie zmienna SERV_ADDR, nalezy ustawic ja jako adres serwera java
