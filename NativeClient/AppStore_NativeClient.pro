@@ -30,18 +30,26 @@ TEMPLATE = app
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
+    echoclient.cpp \
     restclient_src/connection.cc \
     restclient_src/helpers.cc \
     restclient_src/restclient.cc \
-    game_info.cpp
+    gameStore.cpp \
+    gameLocal.cpp \
+    games_manager.cpp
 
 HEADERS += \
         mainwindow.h \
+    echoclient.h \
     restclient_inc/connection.h \
     restclient_inc/helpers.h \
     restclient_inc/restclient.h \
-    game_info.h
+    gameStore.h \
+    gameLocal.h \
+    games_manager.h
 
+target.path = $$[QT_INSTALL_EXAMPLES]/websockets/echoclient
+INSTALLS += target
 
 #INCLUDEPATH +=G:\qt\AppStoreNativeClient\curl-7.56.1-win64-mingw\include
 #INCLUDEPATH +=G:\qt\AppStoreNativeClient\curl-7.56.1-win64-mingw\lib
