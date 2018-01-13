@@ -11,19 +11,22 @@ public:
     int gameLocal_SelectedId;
     std::vector<gameStore> gamesStore;
     std::vector<gameLocal> gamesLocal;
+    bool some_updates_available;
 
     games_manager();
     void run();
     void run_from_store();
     bool install();
     void remove();
-    void update();
+    bool update(int local_id);
+    bool update_all_available();
     void saveLocalInfo();
     void readLocalInfo();
     void getGamesfromRest();
 
 private:
     bool removeDir(const QString & dirName);
+    void checkUpdates();
 };
 
 #endif // GAMES_MANAGER_H

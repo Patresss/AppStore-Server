@@ -10,7 +10,7 @@ QT       += core websockets
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = AppStore_NativeClient
-CONFIG   += console
+#CONFIG   += console
 CONFIG   -= app_bundle
 
 TEMPLATE = app
@@ -30,7 +30,7 @@ TEMPLATE = app
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-    echoclient.cpp \
+    #echoclient.cpp \
     restclient_src/connection.cc \
     restclient_src/helpers.cc \
     restclient_src/restclient.cc \
@@ -40,7 +40,7 @@ SOURCES += \
 
 HEADERS += \
         mainwindow.h \
-    echoclient.h \
+    #echoclient.h \
     restclient_inc/connection.h \
     restclient_inc/helpers.h \
     restclient_inc/restclient.h \

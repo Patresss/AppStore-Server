@@ -11,6 +11,8 @@ gameLocal::gameLocal(int id_init, QString name_init, QString version_init, QStri
     game_path = game_path_init;
     icon_path = icon_path_init;
     img_path = img_path_init;
+
+    update_available = false;
 }
 
 void gameLocal::run()

@@ -11,6 +11,7 @@ public:
   QString game_path;
   QString icon_path;
   QString img_path;
+  bool update_available;
 
   gameLocal(int id_init, QString name_init, QString version_init, QString description_init,
             QString game_path_init, QString icon_path_init, QString img_path_init);

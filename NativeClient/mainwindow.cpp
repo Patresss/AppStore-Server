@@ -2,8 +2,6 @@
 #include "ui_mainwindow.h"
 
 #include <QMessageBox>
-//#include "echoclient.h"
-
 #include <QDebug>
 
 #define TAB_STORE_ID 0
@@ -32,6 +30,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->run_button->setStyleSheet("QPushButton {background-color: #232323; color: white;}");
     ui->update_button->setStyleSheet("QPushButton {background-color: #232323; color: white;}");
     ui->remove_button->setStyleSheet("QPushButton {background-color: #232323; color: white;}");
+    ui->update_games_bt->setStyleSheet("QPushButton {background-color: #232323; color: white;}");
     ui->run_Store_Button->setStyleSheet("QPushButton {background-color: #232323; color: white;}");
 
     ui->run_Store_Button->hide();
@@ -39,11 +38,22 @@ MainWindow::MainWindow(QWidget *parent) :
 
     gm = new games_manager();
 
+    if(gm->some_updates_available)
+    {
+        ui->update_games_bt->show();
+    }
+    else
+    {
+        ui->update_games_bt->hide();
+    }
+
     ui->run_button->hide();
     ui->update_button->hide();
     ui->remove_button->hide();
 
     gamesStore_fillList();
+
+    QTimer::singleShot(1000, this, SLOT(timerHandler()));
 }
 
 MainWindow::~MainWindow()
@@ -54,7 +64,7 @@ MainWindow::~MainWindow()
 
 int MainWindow::getGameSelectedId()
 {
-    int id;
+    int id = 0;
     QItemSelectionModel* selectionModel;
     QAbstractListModel*  model;
     bool selected = false;
@@ -87,6 +97,28 @@ int MainWindow::getGameSelectedId()
 
     return id;
 }
+
+void MainWindow::update_games()
+{
+    QMessageBox msgBox;
+    bool status = false;
+
+    status = gm->update_all_available();
+    if(status == true)
+    {
+        msgBox.setInformativeText("updates complete");
+        ui->update_games_bt->hide();
+    }
+    else
+    {
+        msgBox.setInformativeText("updates failed");
+    }
+    checkGameUpdateAvailable();
+    gamesLocal_fillList();
+
+    msgBox.setStandardButtons(QMessageBox::Ok);
+    msgBox.exec();
+}
 void MainWindow::on_run_Store_Button_clicked()
 {
     gm->gameStore_SelectedId = getGameSelectedId();
@@ -114,7 +146,52 @@ void MainWindow::on_remove_button_clicked()
 
 void MainWindow::on_update_button_clicked()
 {
-    gm->update();
+    QSize image_size;
+    QPixmap image;
+    QGraphicsScene *scene;
+    QString path;
+
+    uint8_t tmp_id;
+
+    tmp_id = gm->gameLocal_SelectedId = getGameSelectedId();
+    gm->update(gm->gameLocal_SelectedId);
+    checkGameUpdateAvailable();
+
+    gm->gameLocal_SelectedId = getGameSelectedId();
+
+    if(gm->gameLocal_SelectedId >= 0)
+    {
+        ui->run_button->show();
+        ui->remove_button->show();
+    }
+    else
+    {
+        ui->run_button->hide();
+        ui->remove_button->hide();
+    }
+    checkGameUpdateAvailable();
+
+    path = "data/game" + QString::number(gm->gameLocal_SelectedId + 1) + "/image.png";
+    image_size = ui->game_image->size();
+    image_size.rwidth() -= 10;
+    image_size.rheight() -= 10;
+
+    image.load(gm->gamesLocal[gm->gameLocal_SelectedId].img_path);
+
+    image = image.scaled(image_size);
+    scene = new QGraphicsScene(this);
+    scene->addPixmap(image);
+    scene->setSceneRect(image.rect());
+
+    ui->game_image_2->setScene(scene);
+
+    ui->game_version_label_2->setText(gm->gamesLocal[gm->gameLocal_SelectedId].version);
+    ui->game_name_label_2->setText(gm->gamesLocal[gm->gameLocal_SelectedId].name);
+    ui->game_description_tb_2->setText(gm->gamesLocal[gm->gameLocal_SelectedId].description);
+
+    gm->gameLocal_SelectedId = tmp_id;
+    ui->listWidget->item(tmp_id)->setSelected(true);
+    gamesLocal_fillList();
 }
 
 void MainWindow::on_installGame_button_clicked()
@@ -132,6 +209,7 @@ void MainWindow::on_installGame_button_clicked()
         //installation failed, probably game is installed
         msgBox.setInformativeText("Installation failed");
     }
+
     msgBox.setStandardButtons(QMessageBox::Ok);
     msgBox.exec();
 }
@@ -176,15 +254,14 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item) //gameLocal_li
     if(gm->gameLocal_SelectedId >= 0)
     {
         ui->run_button->show();
-        ui->update_button->show();
         ui->remove_button->show();
     }
     else
     {
         ui->run_button->hide();
-        ui->update_button->hide();
         ui->remove_button->hide();
     }
+    checkGameUpdateAvailable();
 
     path = "data/game" + QString::number(gm->gameLocal_SelectedId + 1) + "/image.png";
     image_size = ui->game_image->size();
@@ -204,6 +281,7 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item) //gameLocal_li
     ui->game_name_label_2->setText(gm->gamesLocal[gm->gameLocal_SelectedId].name);
     ui->game_description_tb_2->setText(gm->gamesLocal[gm->gameLocal_SelectedId].description);
 
+    checkGameUpdateAvailable();
 }
 void MainWindow::on_tabWidget_currentChanged(int index)
 {
@@ -216,6 +294,7 @@ void MainWindow::on_tabWidget_currentChanged(int index)
         break;
     case TAB_GAMES_ID:
         gamesLocal_fillList();
+        checkGameUpdateAvailable();
         break;
     }
 }
@@ -259,6 +338,52 @@ void MainWindow::checkInstalledGames() //TODO: refactor
         if(!isInstalled)
         {
             ui->installGame_button->show();
+        }
+    }
+}
+bool MainWindow::checkGameUpdateAvailable()
+{
+    bool status = false;
+
+    ui->update_games_bt->hide();
+    for(unsigned int i = 0; i < gm->gamesLocal.size(); i++)
+    {
+        if(gm->gamesLocal[i].update_available)
+        {
+            ui->update_games_bt->show();
+            status = true;
+        }
+    }
+
+    ui->update_button->hide();
+    if(gm->gameLocal_SelectedId >= 0)
+    {
+        if(gm->gamesLocal[gm->gameLocal_SelectedId].update_available)
+        {
+            ui->update_button->show();
+        }
+    }
+
+    return status;
+}
+
+void MainWindow::on_update_games_bt_clicked()
+{
+    update_games();
+}
+
+void MainWindow::timerHandler()
+{
+    if(checkGameUpdateAvailable())
+    {
+        QMessageBox msgBox;
+        msgBox.setText("updates available");
+        msgBox.setInformativeText("update all old games?");
+        msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+        msgBox.setModal(false);
+        if(msgBox.exec() == QMessageBox::Yes)
+        {
+            update_games();
         }
     }
 }

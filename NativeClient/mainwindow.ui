@@ -306,6 +306,19 @@
      </widget>
     </widget>
    </widget>
+   <widget class="QPushButton" name="update_games_bt">
+    <property name="geometry">
+     <rect>
+      <x>530</x>
+      <y>1</y>
+      <width>91</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Update games</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">

@@ -7,7 +7,6 @@
 #include <QDebug>
 
 #include "games_manager.h"
-#include "ui_mainwindow.h"
 #include "restclient_inc/restclient.h"
 games_manager::games_manager()
 {
@@ -15,6 +14,8 @@ games_manager::games_manager()
     gameLocal_SelectedId = -1;
     getGamesfromRest();
     readLocalInfo();
+    some_updates_available = false;
+    checkUpdates();
 }
 
 void games_manager::run()
@@ -120,9 +121,101 @@ void games_manager::remove()
     gameLocal_SelectedId = -1;
 }
 
-void games_manager::update()
+bool games_manager::update(int local_id)
 {
-    gamesLocal[gameLocal_SelectedId].update();
+    bool status;
+    removeDir("data\\game"+ QString::number(gamesLocal[local_id].id));
+
+    std::string rest_id = QString::number(gamesLocal[local_id].id).toUtf8().constData();
+    RestClient::Response f = RestClient::get("http://localhost:8080/api/games/" + rest_id);
+    QString GamesJSON = QString::fromUtf8(f.body.c_str());
+    QJsonDocument jsonResponse = QJsonDocument::fromJson(GamesJSON.toUtf8());
+    QJsonObject jsonObject = jsonResponse.object();
+
+    if(!QDir("data").exists())
+    {
+           QDir().mkdir("data");
+    }
+
+    QString id = QString::number(jsonObject["id"].toInt());
+    QString name = jsonObject["name"].toString();
+    QString desc = jsonObject["description"].toString();
+    QString v = jsonObject["version"].toString();
+    QString icon = jsonObject["icon"].toString();
+    QString image = jsonObject["image"].toString();
+    QString file = jsonObject["file"].toString();
+
+    if(!QDir("data\\game" + id).exists()) //create folder for game if is not exist
+    {
+        QDir().mkdir("data\\game" + id);
+
+        QImage icon_image;
+        QString icon_path;
+        {// icon
+            icon_path = "data\\game" + id + "\\icon.png";
+            QByteArray base64Data = icon.toUtf8().left(4967296);
+            icon_image.loadFromData(QByteArray::fromBase64(base64Data), "PNG");
+            icon_image.save(icon_path, "PNG");
+        }
+
+        QImage image_image;
+        QString image_path;
+        { //image
+            image_path = "data\\game" + id + "\\image.png";
+            QByteArray base64Data = image.toUtf8().left(4967296);
+            image_image.loadFromData(QByteArray::fromBase64(base64Data), "PNG");
+            image_image.save(image_path, "PNG");
+        }
+
+        QString game_path;
+        { //game_path
+            game_path = "data\\game" + id + "\\game.nes";
+            QByteArray base64Data = file.toUtf8().left(4967296);
+
+            QFile file(game_path);
+            if (file.open(QIODevice::ReadWrite))
+            {
+               file.write(QByteArray::fromBase64(base64Data));
+            }
+            file.close();
+        }
+        gamesLocal[local_id].id = id.toInt();
+        gamesLocal[local_id].name = name;
+        gamesLocal[local_id].version = v;
+        gamesLocal[local_id].description = desc;
+        gamesLocal[local_id].game_path = game_path;
+        gamesLocal[local_id].icon_path = icon_path;
+        gamesLocal[local_id].img_path = image_path;
+
+        gamesLocal[local_id].update_available = false;
+
+        status = true;
+    }
+    else
+    {
+        status = false;
+    }
+
+    return status;
+}
+
+bool games_manager::update_all_available()
+{
+    bool status = false
+            ;
+    for (unsigned int i = 0; i < gamesLocal.size(); i++)
+    {
+        if(gamesLocal[i].update_available)
+        {
+            status = update(i);
+            if(status == false)
+            {
+                break;
+            }
+        }
+    }
+
+    return status;
 }
 
 void games_manager::saveLocalInfo()
@@ -268,4 +361,23 @@ void games_manager::getGamesfromRest()
 
        gamesStore.push_back(gameStore(id.toInt(), name, v, desc,"",icon_image,image_image));
    }
+}
+
+void games_manager::checkUpdates()
+{
+    some_updates_available = false;
+
+    for(uint32_t i = 0; i < gamesLocal.size(); i++)
+    {
+        for(uint32_t j = 0; j < gamesStore.size(); j++)
+        {
+            uint8_t compare_versions = QString::compare(gamesStore[j].version , gamesLocal[i].version, Qt::CaseInsensitive);
+
+            if(gamesStore[j].id == gamesLocal[i].id  && compare_versions != 0)
+            {
+                gamesLocal[i].update_available = true;
+                some_updates_available = true;
+            }
+        }
+    }
 }
