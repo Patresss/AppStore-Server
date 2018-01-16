@@ -5,6 +5,7 @@
 #include <QJsonArray>
 #include <QJsonValue>
 #include <QDebug>
+#include <QProcess>
 
 #include "games_manager.h"
 #include "restclient_inc/restclient.h"
@@ -304,22 +305,11 @@ bool games_manager::removeDir(const QString &dirName)
 {
     bool result = true;
     QDir dir(dirName);
+    result = dir.removeRecursively();
+    QString qstr = "RD /S /Q " + dirName;
+    const char *c = qstr.toLatin1().data();
+    system(c);
 
-    if (dir.exists()) {
-        Q_FOREACH(QFileInfo info, dir.entryInfoList(QDir::NoDotAndDotDot | QDir::System | QDir::Hidden  | QDir::AllDirs | QDir::Files, QDir::DirsFirst)) {
-            if (info.isDir()) {
-                result = removeDir(info.absoluteFilePath());
-            }
-            else {
-                result = QFile::remove(info.absoluteFilePath());
-            }
-
-            if (!result) {
-                return result;
-            }
-        }
-        result = QDir().rmdir(dirName);
-    }
     return result;
 }
 
