@@ -20,7 +20,7 @@ class ChatController {
     @SendTo("/topic/messages")
     @Throws(Exception::class)
     fun send(message: Message): OutputMessage {
-        log.debug("Sending message")
+        log.info("Sending message: $message")
         return OutputMessage(from = message.name, text = message.text)
     }
 
