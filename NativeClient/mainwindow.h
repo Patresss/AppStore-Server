@@ -5,10 +5,8 @@
 
 #include <QListWidget>
 #include <QMainWindow>
-
-#include "image1.h"
-#include "game_info.h"
-
+#include<QTimer>
+#include "games_manager.h"
 
 namespace Ui {
 class MainWindow;
@@ -21,20 +19,33 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    void add_item(QString item, QString icon_str, int id);
 
-    std::vector<game_info> games;
 private slots:
-
+    void timerHandler();
     void on_listWidget_itemClicked(QListWidgetItem *item);
+    void on_run_button_clicked();
+    void on_remove_button_clicked();
+    void on_update_button_clicked();
+    void on_installGame_button_clicked();
+    void on_gamesStore_listWidget_clicked(const QModelIndex &index);
+    void on_tabWidget_currentChanged(int index);
+    void on_run_Store_Button_clicked();
+
+    void on_update_games_bt_clicked();
 
 private:
-    void getGamesfromRest();
-    int getGameSelectedId();
-    int gameSelectedId;
-
     Ui::MainWindow *ui;
-    std::vector<Image> images;
+    games_manager *gm;
+    QTimer * timer;
+
+    int getGameSelectedId();
+    void update_games();
+    void gamesStore_fillList();
+    void gamesLocal_fillList();
+    void checkInstalledGames();
+    bool checkGameUpdateAvailable();
+
+
 
 };
 
