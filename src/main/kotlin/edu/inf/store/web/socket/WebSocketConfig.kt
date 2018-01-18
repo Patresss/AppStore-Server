@@ -18,13 +18,13 @@ class WebSocketConfig : AbstractWebSocketMessageBrokerConfigurer() {
     }
 
     override fun configureMessageBroker(config: MessageBrokerRegistry?) {
-        log.warn("Configure message broker: $config")
+        log.info("Configure message broker: $config")
         config?.enableSimpleBroker("/topic")
         config?.setApplicationDestinationPrefixes("/app")
     }
 
     override fun registerStompEndpoints(registry: StompEndpointRegistry) {
-        log.debug("RegisterStompEndpoints: $registry")
+        log.info("RegisterStompEndpoints: $registry")
         registry.addEndpoint("/chat").setAllowedOrigins("*")
         registry.addEndpoint("/chat").setAllowedOrigins("*").withSockJS()
     }
