@@ -136,11 +136,11 @@ def edit(id):
             gicon = request.files['gicon'].read()
             if gicon!= "":
                 gicon = base64.b64encode(gicon).decode('utf-8')
-        gfile = request.form.get('ghfile', "")
-        if gfile == "":
-            gfile = request.files['gfile'].read()
-            if gfile!= "":
-                gfile = base64.b64encode(gfile).decode('utf-8')
+        #gfile = request.form.get('ghfile', "")
+        #if gfile == "":
+        gfile = request.files['gfile'].read()
+        if gfile!= "":
+      	    gfile = base64.b64encode(gfile).decode('utf-8')
 
         if len(errors) == 0:
 
@@ -156,6 +156,7 @@ def edit(id):
                 data.update({'icon': "%s" % gicon,})
             if gfile != None:
                 data.update({'file': "%s" % gfile,})
+
             headers = {'Content-type': 'application/json','Accept': 'text/plain'}
             r = requests.put("%sapi/games" % SERV_ADDR, data=json.dumps(data),headers=headers)
 

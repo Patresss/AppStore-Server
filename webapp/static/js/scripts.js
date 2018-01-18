@@ -54,7 +54,7 @@ function showMessageOutput(messageOutput) {
 
 function connect() {;
     username = "Unknow"+(Math.floor((Math.random(1000)*1000)));
-    var socket = new SockJS('localhost:8080/chat');
+    var socket = new SockJS('192.168.43.63:8080/chat');
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function(frame) {
         stompClient.subscribe('/topic/messages', function(messageOutput) {
